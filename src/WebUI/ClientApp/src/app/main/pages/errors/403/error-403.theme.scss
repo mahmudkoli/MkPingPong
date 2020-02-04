@@ -1,0 +1,22 @@
+@mixin error-403-theme($theme) {
+
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    error-404 {
+
+        #error-403 {
+
+            .content {
+
+                .message {
+                    color: map-get($foreground, secondary-text);
+                }
+
+                .sub-message {
+                    color: map-get($foreground, secondary-text);
+                }
+            }
+        }
+    }
+}

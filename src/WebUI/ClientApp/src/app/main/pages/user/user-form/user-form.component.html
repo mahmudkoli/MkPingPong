@@ -1,0 +1,162 @@
+<div class="page-layout simple fullwidth">
+
+    <!-- HEADER -->
+    <div class="header accent p-24" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Users</span>
+            </div>
+            <div class="h2 mt-16">{{getComponentTitle()}}</div>
+        </div>
+
+        <div>
+            <button type="button" [routerLink]="['/pages/users']" mat-raised-button matTooltip="Back to list">Back</button>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <mat-card>
+            
+            <mat-card-title>
+
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+					<div>
+						<h3>{{getComponentTitle()}}</h3>
+                    </div>
+                    <div>
+                        <button type="button" class="mr-12" (click)="resetAll()" [disabled]="selectedTab !== 0" mat-raised-button matTooltip="Reset changes">
+                            Reset
+                        </button>
+                        <button type="button" class="mr-12" color="accent" [disabled]="selectedTab !== 0" (click)="onSumbit(true)" mat-raised-button matTooltip="Save changes">
+                            Save
+                        </button>
+                    </div>
+				</div>
+
+        </mat-card-title>
+        <mat-card-content>  
+            <div class="mat-elevation-z0">
+                
+
+                <mat-tab-group [(selectedIndex)]="selectedTab">
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="mr-4">person</mat-icon>
+                            Basic info
+                        </ng-template>
+                        <ng-template matTabContent>
+                            <!--begin::Form-->
+                            <div *ngIf="user">
+                                <form [formGroup]="userForm" class="border-bottom mt-12">
+        
+                                    <div *ngIf="hasFormErrors">
+                                        <!-- Oh snap! Change a few things up and try submitting again.<br/> -->
+                                        <ul><li *ngFor="let err of errors">{{err}}</li></ul>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlexFill>
+                                        <div fxLayout="column" fxLayoutAlign="start start" fxFlex="calc(50% - 20px)">
+                                            <div fxFlexFill>
+                                                <mat-form-field  class="w-100-p" appearance="outline">
+                                                    <mat-label>User Name</mat-label>
+                                                    <input matInput placeholder="Enter User Name" formControlName="userName"/>
+                                                    <mat-error>User Name is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlexFill>
+                                                <mat-form-field  class="w-100-p" appearance="outline">
+                                                    <mat-label>Full Name</mat-label>
+                                                    <input matInput placeholder="Enter Full Name" formControlName="fullName"/>
+                                                    <mat-error>Full Name is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlexFill>
+                                                <mat-form-field  class="w-100-p" appearance="outline">
+                                                    <mat-label>Email</mat-label>
+                                                    <input type="email" matInput placeholder="Enter Email" formControlName="email"/>
+                                                    <mat-error>
+                                                        <span *ngIf="userForm.controls['email'].errors?.required">Email is <strong>required</strong></span>
+                                                        <span *ngIf="userForm.controls['email'].errors?.email"><strong>Invalid</strong> email</span>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlexFill>
+                                                <mat-form-field fxFlexFill appearance="outline">
+                                                    <mat-label>User Role</mat-label>
+                                                    <mat-select placeholder="User Role" formControlName="userRoleId"> 
+                                                        <mat-option>-Please select role-</mat-option>
+                                                        <mat-option *ngFor="let role of userRoles" [value]="role.id">{{role.name}}</mat-option>
+                                                    </mat-select>
+                                                    <mat-error>User Role is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div  fxLayout="column" fxLayoutAlign="start start" fxFlex="calc(50% - 20px)">
+                                            <div fxFlexFill>
+                                                <mat-form-field  class="w-100-p" appearance="outline">
+                                                    <mat-label>Enter Address</mat-label>
+                                                    <input matInput placeholder="Enter Address" formControlName="address"/>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlexFill>
+                                                <mat-form-field  class="w-100-p" appearance="outline">
+                                                    <mat-label>Phone Number</mat-label>
+                                                    <input matInput placeholder="Enter Phone Number" formControlName="phoneNumber"/>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlexFill>
+                                                <mat-form-field  class="w-100-p" appearance="outline">
+                                                    <mat-select placeholder="Gender" formControlName="gender"> 
+                                                        <mat-option>-Please select gender-</mat-option>
+                                                        <mat-option value="Male">Male</mat-option>
+                                                        <mat-option value="Female">Female</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!--end::Form-->
+                        </ng-template>
+                    </mat-tab>
+                    <mat-tab *ngIf="user" [disabled]="!user || !user.id">
+                        <ng-template mat-tab-label>
+                            <mat-icon class="mr-4">image</mat-icon>
+                            Image upload
+                        </ng-template>
+                        <ng-template matTabContent>
+                            <app-user-image-upload  [userId]="user.id" [imageUrl]="user.imageUrl" [(loadingSubject)]="loadingSubject"></app-user-image-upload>
+                        </ng-template>
+                    </mat-tab>
+                    <mat-tab *ngIf="user" [disabled]="!user || !user.id">
+                        <ng-template mat-tab-label>
+                            <mat-icon class="mr-4">lock</mat-icon>
+                            Change password
+                        </ng-template>
+                        <ng-template matTabContent>
+                            <app-user-change-password [userId]="user.id" [(loadingSubject)]="loadingSubject"></app-user-change-password>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+
+            </div>
+        </mat-card-content> 
+        </mat-card>
+
+    <!-- / CONTENT -->
+
+</div>

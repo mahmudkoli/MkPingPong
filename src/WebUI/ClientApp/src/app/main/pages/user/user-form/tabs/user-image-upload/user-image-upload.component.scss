@@ -1,0 +1,42 @@
+@import "src/@fuse/scss/fuse";
+
+:host {
+    width: 100%;
+}
+
+// for image start ---
+.file-preview input {
+    display: none;
+}
+
+.file-container {
+    position: relative;
+    margin: 5px 0px;
+    width: 220px;
+    height: 250px;
+    cursor:pointer;
+}
+
+.file-container img {
+    width: 100%;
+    height: 100%;
+    border:1px dotted #000;
+}
+
+.file-container:hover img {
+    opacity: 0.5;
+    border: 2px solid #170468;
+}
+
+.file-text-block {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    color:white;
+}
+
+.file-container:hover .file-text-block {
+    color:black;
+}
+// for image end ---

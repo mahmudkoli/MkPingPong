@@ -1,0 +1,66 @@
+
+<div>
+    <div *ngIf="userRole">
+        <h2 mat-dialog-title>{{getRoleName()}}</h2>
+        
+        <div class="border-top mb-8"></div>
+    </div>
+    <div *ngIf="userRole">
+        <mat-dialog-content>
+
+            <div *ngIf="hasFormErrors">
+                Oh snap! Change a few things up and try submitting again.
+            </div>
+
+            <div fxLayout="column" fxLayoutAlign="center start">
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
+                    <div fxFlex="50">
+                        <mat-form-field class="w-100-p"  appearance="outline">
+                            <mat-label>Role Name</mat-label>
+                            <input matInput 
+                                placeholder="Enter Role Name"  
+                                [(ngModel)]="userRole.name" />
+                            <mat-error>Role Name is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                
+                <h4> Permissions: </h4>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
+                    <div fxFlex="100" class="mb-20">
+                        <div class="">
+                            <div fxLayout="column" fxLayoutAlign="center start">
+                                <div *ngFor="let _rootRole of rolePermissions" class="mb-20" fxFlexFill>
+                                    <div class="border-bottom py-16">
+                                        <span class="">
+                                            <mat-checkbox [(ngModel)]="_rootRole.isSelected"
+                                                (change)="isSelectedChanged($event, _rootRole)">{{ _rootRole.title }}</mat-checkbox> 
+                                        </span>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" class="py-16 pl-16">
+                                        <div class="mr-12" *ngFor="let _childRole of _rootRole._children">
+                                            <span class="">
+                                                <mat-checkbox [(ngModel)]="_childRole.isSelected"
+                                                    (change)="isSelectedChanged($event, _childRole)">{{ _childRole.title }}</mat-checkbox>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button type="button" mat-raised-button mat-dialog-close cdkFocusInitial matTooltip="Cancel changes">
+                Cancel
+            </button>&nbsp;
+            <button type="button" [disabled]="!isRoleNameValid()" mat-raised-button color="accent" (click)="onSubmit()" [disabled]="viewLoading" matTooltip="Save changes">
+                Save
+            </button>
+          </mat-dialog-actions>
+    </div>
+</div>

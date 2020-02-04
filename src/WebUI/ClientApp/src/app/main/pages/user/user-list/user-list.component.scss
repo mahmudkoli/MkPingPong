@@ -1,0 +1,14 @@
+@import "src/@fuse/scss/fuse";
+
+:host {
+    width: 100%;
+}
+
+.mat-menu-item {
+	line-height: 40px !important;
+	height: 40px !important;
+}
+
+.mat-menu-item .mat-icon {
+	margin-right: 6px !important;
+}

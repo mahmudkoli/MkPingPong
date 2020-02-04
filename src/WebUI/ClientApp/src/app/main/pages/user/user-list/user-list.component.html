@@ -1,0 +1,134 @@
+<div class="page-layout simple fullwidth">
+
+    <!-- HEADER -->
+    <div class="header accent p-24" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Users</span>
+            </div>
+            <div class="h2 mt-16">Users</div>
+        </div>
+
+        <div>
+            <button type="button" [routerLink]="['/pages/users/new']" mat-raised-button matTooltip="Create new user">New user</button>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <mat-card>
+            
+            <mat-card-title>
+
+                <div fxLayout="row" fxLayoutAlign="start center">
+					<div fxFlex="33"class="mr-4">
+						<mat-form-field class="w-100-p">
+							<input matInput #fullNameInput placeholder="Full Name">
+							<mat-hint align="start">
+								<strong>Search</strong> by full name
+							</mat-hint>
+						</mat-form-field>
+					</div>
+					<div fxFlex="33"class="mr-4">
+						<mat-form-field class="w-100-p">
+							<input matInput #userNameInput placeholder="User Name">
+							<mat-hint align="start">
+								<strong>Search</strong> by user name
+							</mat-hint>
+						</mat-form-field>
+					</div>
+					<div fxFlex="33" class="mr-4">
+						<mat-form-field class="w-100-p">
+							<input matInput #emailInput placeholder="Email">
+							<mat-hint align="start">
+								<strong>Search</strong> by email
+							</mat-hint>
+						</mat-form-field>
+					</div>
+				</div>
+
+        </mat-card-title>
+        <mat-card-content>  
+            <div class="mat-elevation-z0">
+                <table mat-table [dataSource]="dataSource" matSort class="w-100-p"
+                    matSortActive="fullName" matSortDirection="asc">
+    
+                    <ng-container matColumnDef="serial">
+                        <th mat-header-cell *matHeaderCellDef>#</th>
+                        <td class="w-5-p" mat-cell *matCellDef="let userRole; let i = index" [ngClass]="{'disabled-text': !userRole.isActive && !userRole.isDeleted,'warn-text': userRole.isDeleted}">{{absoluteSerial(i)}}</td>
+                    </ng-container>
+    
+                    
+				<ng-container matColumnDef="fullName">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
+					<td class="w-15-p" mat-cell *matCellDef="let user" [ngClass]="{'disabled-text': !user.isActive && !user.isDeleted,'warn-text': user.isDeleted}">{{user.fullName}}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="userName">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>User Name</th>
+					<td class="w-15-p" mat-cell *matCellDef="let user" [ngClass]="{'disabled-text': !user.isActive && !user.isDeleted,'warn-text': user.isDeleted}">{{user.userName}}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="email">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+					<td class="w-15-p" mat-cell *matCellDef="let user" [ngClass]="{'disabled-text': !user.isActive && !user.isDeleted,'warn-text': user.isDeleted}">{{user.email}}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="phoneNumber">
+					<th mat-header-cell *matHeaderCellDef>Phone Number</th>
+					<td class="w-10-p" mat-cell *matCellDef="let user" [ngClass]="{'disabled-text': !user.isActive && !user.isDeleted,'warn-text': user.isDeleted}">{{user.phoneNumber}}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="address">
+					<th mat-header-cell *matHeaderCellDef>Address</th>
+					<td class="w-20-p" mat-cell *matCellDef="let user" [ngClass]="{'disabled-text': !user.isActive && !user.isDeleted,'warn-text': user.isDeleted}">{{user.address}}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="userRole">
+					<th mat-header-cell *matHeaderCellDef>User Role</th>
+					<td class="w-10-p" mat-cell *matCellDef="let user" [ngClass]="{'disabled-text': !user.isActive && !user.isDeleted,'warn-text': user.isDeleted}">{{user.userRole?.name}}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="actions">
+					<th mat-header-cell *matHeaderCellDef>Actions</th>
+					<td class="w-10-p" mat-cell *matCellDef="let user">
+						<mat-slide-toggle [checked]="user.isActive" [disabled]="user.isDeleted" matTooltip="Active Inactive" (change)="toggleActiveInactive(user.id,$event)">
+						</mat-slide-toggle>
+						<button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="More actions" [disabled]="!user.isActive || user.isDeleted">
+							<mat-icon>more_vert</mat-icon>
+						</button>
+						<mat-menu #menu="matMenu">
+							<button (click)="viewUser(user.id)" mat-menu-item color="accent">
+								<mat-icon color="accent">visibility</mat-icon>
+								<span>View User</span>
+							</button>
+							<button (click)="editUser(user.id)" mat-menu-item color="primary">
+								<mat-icon color="primary">edit</mat-icon>
+								<span>Edit User</span>
+							</button>
+							<button (click)="deleteUser(user.id)" mat-menu-item color="warn">
+								<mat-icon color="warn">delete</mat-icon>
+								<span>Delete User</span>
+							</button>
+						</mat-menu>
+					</td>
+				</ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                
+                <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="[5, 10, 20]" [length]="dataSource.totalItems$ | async" [showFirstLastButtons]="true"></mat-paginator>
+            </div>
+        </mat-card-content> 
+        </mat-card>
+
+    <!-- / CONTENT -->
+
+</div>

@@ -1,0 +1,79 @@
+<div class="page-layout simple fullwidth">
+
+    <!-- HEADER -->
+    <div class="header accent p-24" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">User Roles</span>
+            </div>
+            <div class="h2 mt-16">User Roles</div>
+        </div>
+
+        <div>
+            <button type="button" (click)="addUserRole()" mat-raised-button matTooltip="Create new user role">
+                New user role
+            </button>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <mat-card>
+            
+            <mat-card-title>
+                <div fxLayout="row" fxLayoutAlign="start center">
+					<div fxFlex="33"class="mr-4">
+                    <mat-form-field  class="w-100-p">
+                        <input matInput #nameInput placeholder="Name">
+                        <mat-hint align="start"><strong>Search</strong> by name</mat-hint>
+                    </mat-form-field>
+                    </div>
+            </div>
+        </mat-card-title>
+        <mat-card-content>  
+            <div class="mat-elevation-z0">
+                <table mat-table [dataSource]="dataSource" matSort class="w-100-p"
+                    matSortActive="name" matSortDirection="asc">
+    
+                    <ng-container matColumnDef="serial">
+                        <th mat-header-cell *matHeaderCellDef>#</th>
+                        <td class="w-5-p" mat-cell *matCellDef="let userRole; let i = index" [ngClass]="{'disabled-text': !userRole.isActive && !userRole.isDeleted,'warn-text': userRole.isDeleted}">{{absoluteSerial(i)}}</td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                        <td class="w-75-p" mat-cell *matCellDef="let userRole" [ngClass]="{'disabled-text': !userRole.isActive && !userRole.isDeleted,'warn-text': userRole.isDeleted}">{{userRole.name}}</td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Actions</th>
+                        <td class="w-20-p" mat-cell *matCellDef="let userRole">
+                            <mat-slide-toggle [checked]="userRole.isActive" [disabled]="userRole.isDeleted" matTooltip="Active Inactive" (change)="toggleActiveInactive(userRole.id,$event)">
+                            </mat-slide-toggle>
+                            <button class="ml-12" (click)="editUserRole(userRole.id)" [disabled]="!userRole.isActive || userRole.isDeleted" mat-icon-button color="primary" matTooltip="Edit user role">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button (click)="deleteUserRole(userRole.id)" [disabled]="!userRole.isActive || userRole.isDeleted" mat-icon-button color="warn" matTooltip="Delete user role">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                
+                <mat-paginator [pageSize]="PAGE_SIZE" [pageSizeOptions]="[5, 10, 20]" [length]="dataSource.totalItems$ | async" [showFirstLastButtons]="true"></mat-paginator>
+            </div>
+        </mat-card-content> 
+        </mat-card>
+
+    <!-- / CONTENT -->
+</div>
+</div>
