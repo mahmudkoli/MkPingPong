@@ -19,17 +19,19 @@ namespace MkPingPong.Infrastructure.Identity
 
         public async Task<string> GetFullNameAsync(Guid userId)
         {
-            if (userId == null || userId == Guid.Empty) return string.Empty;
+            //if (userId == null || userId == Guid.Empty) return string.Empty;
 
             var user = await _userManager.Users.FirstAsync(u => u.Id == userId);
+
             return user?.FullName ?? string.Empty;
         }
 
         public async Task<string> GetUserNameAsync(Guid userId)
         {
-            if (userId == null || userId == Guid.Empty) return string.Empty;
+            //if (userId == null || userId == Guid.Empty) return string.Empty;
 
             var user = await _userManager.Users.FirstAsync(u => u.Id == userId);
+
             return user?.UserName ?? string.Empty;
         }
     }

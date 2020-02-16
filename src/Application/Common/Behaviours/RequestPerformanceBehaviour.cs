@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using MkPingPong.Application.Common.Interfaces;
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,7 +41,12 @@ namespace MkPingPong.Application.Common.Behaviours
             {
                 var requestName = typeof(TRequest).Name;
                 var userId = _currentUserService.UserId;
-                var userName = await _identityService.GetUserNameAsync(userId);
+                string userName = string.Empty;
+
+                if (userId.HasValue && !Guid.Equals(userId, Guid.Empty))
+                {
+                    userName = await _identityService.GetUserNameAsync(userId.Value);
+                }
 
                 _logger.LogWarning("MkPingPong Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
                     requestName, elapsedMilliseconds, userId, userName, request);

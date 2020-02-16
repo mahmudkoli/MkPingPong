@@ -2,7 +2,7 @@
 
 namespace MkPingPong.Domain.Common
 {
-    public class AuditableEntity : Entity
+    public abstract class AuditableEntity : Entity
     {
         public Guid? CreatedBy { get; set; }
 

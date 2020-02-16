@@ -5,6 +5,6 @@ namespace MkPingPong.WebUI.IntegrationTests
 {
     public class TestCurrentUserService : ICurrentUserService
     {
-        public Guid UserId => Guid.Empty;
+        public Guid? UserId => Guid.Empty;
     }
 }

@@ -3,6 +3,7 @@ using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace MkPingPong.Application.Common.Behaviours
 {
@@ -23,7 +24,12 @@ namespace MkPingPong.Application.Common.Behaviours
         {
             var requestName = typeof(TRequest).Name;
             var userId = _currentUserService.UserId;
-            var userName = await _identityService.GetUserNameAsync(userId);
+            string userName = string.Empty;
+
+            if (userId.HasValue && !Guid.Equals(userId, Guid.Empty))
+            {
+                userName = await _identityService.GetUserNameAsync(userId.Value);
+            }
 
             _logger.LogInformation("MkPingPong Request: {Name} {@UserId} {@UserName} {@Request}",
                 requestName, userId, userName ,request);

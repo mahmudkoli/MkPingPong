@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MkPingPong.Domain.Common
 {
-    public class Entity
+    public abstract class Entity
     {
         public Guid Id { get; set; }
         public bool IsDeleted { get; set; }

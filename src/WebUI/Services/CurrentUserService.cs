@@ -9,10 +9,10 @@ namespace MkPingPong.WebUI.Services
     {
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
-            Guid.TryParse(httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier), out Guid value);
-            UserId = value;
+            var isAuthenticated = Guid.TryParse(httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier), out Guid value);
+            UserId = isAuthenticated ? value : (Guid?)null;
         }
 
-        public Guid UserId { get; }
+        public Guid? UserId { get; }
     }
 }
