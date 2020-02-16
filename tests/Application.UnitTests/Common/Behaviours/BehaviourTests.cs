@@ -12,7 +12,7 @@ namespace MkPingPong.Application.UnitTests.Common.Behaviours
 {
     public class BehaviourTests
     {
-        private readonly Guid UserId = Guid.Parse("59b9d716-0b72-4991-945c-ce94755dbfe6");
+        private readonly Guid UserId = Guid.Empty;
         private const string UserName = "jason.taylor";
 
         public BehaviourTests()
@@ -42,7 +42,7 @@ namespace MkPingPong.Application.UnitTests.Common.Behaviours
             var currentUserService = new Mock<ICurrentUserService>();
             var identityService = new Mock<IIdentityService>();
 
-            currentUserService.Setup(x => x.UserId).Returns((Guid?)null);
+            currentUserService.Setup(x => x.UserId).Returns(Guid.Empty);
 
             IRequestPreProcessor<CreateTodoItemCommand> requestLogger = new RequestLogger<CreateTodoItemCommand>(logger.Object, currentUserService.Object, identityService.Object);
 
